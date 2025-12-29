@@ -74,6 +74,19 @@ html[data-theme="dark"] tr:nth-child(even) td {
   background-color: #1f1f1f !important;
 }
 
+html[data-theme="dark"] tr:hover td,
+html[data-theme="dark"] table tr:hover td {
+  background-color: inherit !important;
+}
+
+html[data-theme="dark"] tr:nth-child(even):hover td {
+  background-color: #1f1f1f !important;
+}
+
+html[data-theme="dark"] tr:nth-child(odd):hover td {
+  background-color: #1a1a1a !important;
+}
+
 html[data-theme="dark"] code {
   background-color: #242424 !important;
   color: #f472b6 !important;
@@ -244,9 +257,10 @@ pre code {
 
 /* Tables */
 table {
-  width: 100%;
+  width: auto;
+  max-width: 100%;
   border-collapse: collapse;
-  margin: 1.5rem 0;
+  margin: 1.5rem auto;
   font-size: 0.95rem;
   border-radius: var(--radius);
   overflow: hidden;
@@ -272,6 +286,19 @@ th {
 
 tr:nth-child(even) td {
   background-color: var(--table-stripe);
+}
+
+/* Disable hover effects on tables */
+tr:hover td {
+  background-color: inherit !important;
+}
+
+tr:nth-child(even):hover td {
+  background-color: var(--table-stripe) !important;
+}
+
+tr:nth-child(odd):hover td {
+  background-color: var(--bg) !important;
 }
 
 /* Images */
