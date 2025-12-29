@@ -1,146 +1,26 @@
-<!-- Theme + MathJax bootstrap (paste at top of index.md) -->
-
-<style>
-  :root {
-    color-scheme: light dark;
-    --bg: #ffffff;
-    --text: #111111;
-    --muted: #555555;
-    --card: #f5f5f5;
-    --border: #e5e5e5;
-    --link: #0b57d0;
-    --code: #f6f8fa;
-  }
-
-  @media (prefers-color-scheme: dark) {
-    :root {
-      --bg: #0b0f14;
-      --text: #e6edf3;
-      --muted: #9aa7b2;
-      --card: #111823;
-      --border: #223044;
-      --link: #7ab7ff;
-      --code: #0f1722;
-    }
-  }
-
-  :root[data-theme="light"] {
-    --bg: #ffffff;
-    --text: #111111;
-    --muted: #555555;
-    --card: #f5f5f5;
-    --border: #e5e5e5;
-    --link: #0b57d0;
-    --code: #f6f8fa;
-  }
-
-  :root[data-theme="dark"] {
-    --bg: #0b0f14;
-    --text: #e6edf3;
-    --muted: #9aa7b2;
-    --card: #111823;
-    --border: #223044;
-    --link: #7ab7ff;
-    --code: #0f1722;
-  }
-
-  html, body {
-    background: var(--bg);
-    color: var(--text);
-  }
-
-  a { color: var(--link); }
-  hr { border-color: var(--border); }
-
-  pre, code {
-    background: var(--code);
-    border-radius: 8px;
-  }
-
-  .topbar {
-    display: flex;
-    justify-content: flex-end;
-    margin: 12px 0 18px 0;
-  }
-
-  .theme-btn {
-    border: 1px solid var(--border);
-    background: var(--card);
-    color: var(--text);
-    padding: 8px 12px;
-    border-radius: 10px;
-    cursor: pointer;
-    font: inherit;
-  }
-</style>
-
-<div class="topbar">
-  <button class="theme-btn" type="button" onclick="toggleTheme()">Toggle theme</button>
-</div>
-
-<script>
-  (function () {
-    const key = "theme";
-    const root = document.documentElement;
-
-    function apply(theme) {
-      root.setAttribute("data-theme", theme);
-      localStorage.setItem(key, theme);
-    }
-
-    const saved = localStorage.getItem(key);
-    if (saved === "light" || saved === "dark") {
-      root.setAttribute("data-theme", saved);
-    } else {
-      const prefersDark = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
-      root.setAttribute("data-theme", prefersDark ? "dark" : "light");
-    }
-
-    window.toggleTheme = function () {
-      const current = root.getAttribute("data-theme");
-      apply(current === "dark" ? "light" : "dark");
-    };
-  })();
-</script>
-
-<script>
-  window.MathJax = {
-    tex: {
-      inlineMath: [['$', '$'], ['\\(', '\\)']],
-      displayMath: [['$$', '$$'], ['\\[', '\\]']],
-      processEscapes: true
-    },
-    options: {
-      skipHtmlTags: ['script','noscript','style','textarea','pre','code']
-    }
-  };
-</script>
-<script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-
-
+<!-- External Resources -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
 
+<!-- Scripts -->
+<script src="theme.js"></script>
 <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
 <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"></script>
 
-<script>
-  document.addEventListener("DOMContentLoaded", function () {
-    renderMathInElement(document.body, {
-      delimiters: [
-        { left: "$$", right: "$$", display: true },
-        { left: "$", right: "$", display: false },
-        { left: "\\[", right: "\\]", display: true },
-        { left: "\\(", right: "\\)", display: false }
-      ],
-      throwOnError: false
-    });
-  });
-</script>
-
-<style>
-  /* Prevent wide equations from overflowing the page */
-  .katex-display { overflow-x: auto; overflow-y: hidden; }
-</style>
+<!-- Theme Toggle Button -->
+<div class="theme-toggle-container">
+  <button class="theme-toggle" type="button" onclick="toggleTheme()" aria-label="Toggle dark mode">
+    <svg class="sun-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+      <path d="M12 17.5a5.5 5.5 0 1 0 0-11 5.5 5.5 0 0 0 0 11zm0 1.5a7 7 0 1 1 0-14 7 7 0 0 1 0 14zm0-17a.75.75 0 0 1 .75.75v1.5a.75.75 0 0 1-1.5 0v-1.5A.75.75 0 0 1 12 2zm0 18a.75.75 0 0 1 .75.75v1.5a.75.75 0 0 1-1.5 0v-1.5A.75.75 0 0 1 12 20zM4.22 4.22a.75.75 0 0 1 1.06 0l1.06 1.06a.75.75 0 0 1-1.06 1.06L4.22 5.28a.75.75 0 0 1 0-1.06zm13.44 13.44a.75.75 0 0 1 1.06 0l1.06 1.06a.75.75 0 0 1-1.06 1.06l-1.06-1.06a.75.75 0 0 1 0-1.06zM2 12a.75.75 0 0 1 .75-.75h1.5a.75.75 0 0 1 0 1.5h-1.5A.75.75 0 0 1 2 12zm18 0a.75.75 0 0 1 .75-.75h1.5a.75.75 0 0 1 0 1.5h-1.5A.75.75 0 0 1 20 12zM5.28 17.66a.75.75 0 0 1 0 1.06l-1.06 1.06a.75.75 0 1 1-1.06-1.06l1.06-1.06a.75.75 0 0 1 1.06 0zm13.44-13.44a.75.75 0 0 1 0 1.06l-1.06 1.06a.75.75 0 1 1-1.06-1.06l1.06-1.06a.75.75 0 0 1 1.06 0z"/>
+    </svg>
+    <svg class="moon-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+      <path d="M12.1 22c-5.5 0-10-4.5-10-10 0-4.8 3.4-8.8 8.1-9.8.5-.1.9.4.7.9-.7 1.7-.7 3.6 0 5.4 1.4 3.4 5.3 5 8.7 3.6.5-.2 1 .2.9.7-1.1 5.2-5.7 9.2-11.4 9.2z"/>
+    </svg>
+  </button>
+</div>
 
 
 
