@@ -1,3 +1,123 @@
+<!-- Theme + MathJax bootstrap (paste at top of index.md) -->
+
+<style>
+  :root {
+    color-scheme: light dark;
+    --bg: #ffffff;
+    --text: #111111;
+    --muted: #555555;
+    --card: #f5f5f5;
+    --border: #e5e5e5;
+    --link: #0b57d0;
+    --code: #f6f8fa;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #0b0f14;
+      --text: #e6edf3;
+      --muted: #9aa7b2;
+      --card: #111823;
+      --border: #223044;
+      --link: #7ab7ff;
+      --code: #0f1722;
+    }
+  }
+
+  :root[data-theme="light"] {
+    --bg: #ffffff;
+    --text: #111111;
+    --muted: #555555;
+    --card: #f5f5f5;
+    --border: #e5e5e5;
+    --link: #0b57d0;
+    --code: #f6f8fa;
+  }
+
+  :root[data-theme="dark"] {
+    --bg: #0b0f14;
+    --text: #e6edf3;
+    --muted: #9aa7b2;
+    --card: #111823;
+    --border: #223044;
+    --link: #7ab7ff;
+    --code: #0f1722;
+  }
+
+  html, body {
+    background: var(--bg);
+    color: var(--text);
+  }
+
+  a { color: var(--link); }
+  hr { border-color: var(--border); }
+
+  pre, code {
+    background: var(--code);
+    border-radius: 8px;
+  }
+
+  .topbar {
+    display: flex;
+    justify-content: flex-end;
+    margin: 12px 0 18px 0;
+  }
+
+  .theme-btn {
+    border: 1px solid var(--border);
+    background: var(--card);
+    color: var(--text);
+    padding: 8px 12px;
+    border-radius: 10px;
+    cursor: pointer;
+    font: inherit;
+  }
+</style>
+
+<div class="topbar">
+  <button class="theme-btn" type="button" onclick="toggleTheme()">Toggle theme</button>
+</div>
+
+<script>
+  (function () {
+    const key = "theme";
+    const root = document.documentElement;
+
+    function apply(theme) {
+      root.setAttribute("data-theme", theme);
+      localStorage.setItem(key, theme);
+    }
+
+    const saved = localStorage.getItem(key);
+    if (saved === "light" || saved === "dark") {
+      root.setAttribute("data-theme", saved);
+    } else {
+      const prefersDark = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
+      root.setAttribute("data-theme", prefersDark ? "dark" : "light");
+    }
+
+    window.toggleTheme = function () {
+      const current = root.getAttribute("data-theme");
+      apply(current === "dark" ? "light" : "dark");
+    };
+  })();
+</script>
+
+<script>
+  window.MathJax = {
+    tex: {
+      inlineMath: [['$', '$'], ['\\(', '\\)']],
+      displayMath: [['$$', '$$'], ['\\[', '\\]']],
+      processEscapes: true
+    },
+    options: {
+      skipHtmlTags: ['script','noscript','style','textarea','pre','code']
+    }
+  };
+</script>
+<script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+
 # Notes from Ultrascale Playbook
 
 This tutorial contains my distilled notes from Hugging Face’s [Ultrascale Playbook](https://huggingface.co/spaces/nanotron/ultrascale-playbook). While I will try to capture the core technical logic of the book, I still highly recommend reading the original book as there are many things that I have not mentioned here. 
