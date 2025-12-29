@@ -25,6 +25,8 @@
 
 
 # Notes from Ultrascale Playbook
+<!-- Add author and date -->
+*By Rasul Alakbarli, 29.12.2025*
 
 This tutorial contains my distilled notes from Hugging Face’s [Ultrascale Playbook](https://huggingface.co/spaces/nanotron/ultrascale-playbook). While I will try to capture the core technical logic of the book, I still highly recommend reading the original book as there are many things that I have not mentioned here. 
 
