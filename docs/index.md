@@ -118,6 +118,32 @@
 <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 
 
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"></script>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    renderMathInElement(document.body, {
+      delimiters: [
+        { left: "$$", right: "$$", display: true },
+        { left: "$", right: "$", display: false },
+        { left: "\\[", right: "\\]", display: true },
+        { left: "\\(", right: "\\)", display: false }
+      ],
+      throwOnError: false
+    });
+  });
+</script>
+
+<style>
+  /* Prevent wide equations from overflowing the page */
+  .katex-display { overflow-x: auto; overflow-y: hidden; }
+</style>
+
+
+
 # Notes from Ultrascale Playbook
 
 This tutorial contains my distilled notes from Hugging Face’s [Ultrascale Playbook](https://huggingface.co/spaces/nanotron/ultrascale-playbook). While I will try to capture the core technical logic of the book, I still highly recommend reading the original book as there are many things that I have not mentioned here. 
