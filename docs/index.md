@@ -23,7 +23,7 @@
 </div>
 
 
-
+<main class="markdown-body">
 # Notes from Ultrascale Playbook
 <!-- Add author and date -->
 *By Rasul Alakbarli, 29.12.2025*
@@ -464,3 +464,5 @@ In practice, these methods are rarely used in isolation. To train the world’s 
 - **ZeRO-1/2 + PP:** Used in training models like **DeepSeek-V3**. This combines the low-overhead weight sharding of ZeRO with the multi-node scalability of Pipeline Parallelism.
 - **TP + PP or ZeRO-3:** The "Maximum Memory" configuration. This is used for models so massive (like Llama-3 405B) that every single component (weights, activations, and optimizer states) must be sharded in every possible direction.
 - **DP + EP:** The standard for **Mixture-of-Experts**. This allows researchers to scale the "knowledge" of the model (experts) without increasing the computational cost per token.
+
+</main>
