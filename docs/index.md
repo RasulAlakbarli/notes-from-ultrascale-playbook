@@ -1,8 +1,8 @@
-# Notes form Ultrascale Playbook
+# Notes from Ultrascale Playbook
 
 This tutorial contains my distilled notes from Hugging Face’s [Ultrascale Playbook](https://huggingface.co/spaces/nanotron/ultrascale-playbook). While I will try to capture the core technical logic of the book, I still highly recommend reading the original book as there are many things that I have not mentioned here. 
 
-In these notes we will first start with important refreshers, then we dive into single GPU optimization, and only after that we will move on to multi GPU training and parallelization methods. There are 5 main parallelization methods that we will discuss here: Data Parallelism (ZeRO-1, ZeRO-2, ZeRO-3), Tensor Parallelism, Context Parallelism, Pipeline Parallelism and finally Expert Parallelism.
+In these notes, we will first start with important refreshers, then we dive into single GPU optimization, and only after that, we will move on to multi GPU training and parallelization methods. There are 5 main parallelization methods that we will discuss here: Data Parallelism (ZeRO-1, ZeRO-2, ZeRO-3), Tensor Parallelism, Context Parallelism, Pipeline Parallelism, and finally Expert Parallelism.
 
 **Now, let’s begin!**
 
@@ -52,7 +52,7 @@ When training a neural network model, we store several items in memory:
 - Model Weights: Stored in BF16 (2 bytes per parameter).
 - Gradients: Also stored in BF16 (2 bytes per parameter).
 - Optimizer States (Adam): This is the heaviest part. It stores a master copy of the weights in FP32 (4 bytes), plus the momentum (4 bytes) and variance (4 bytes) matrices. Total: 12 bytes per parameter.
-- Activations: Output of each layers after forward pass (stored in BF16)
+- Activations: Output of each layer after forward pass (stored in BF16)
 
 Here is the formula to calculate memory usage to store a model inside GPU memory:
 
@@ -110,13 +110,13 @@ Instead of keeping everything in VRAM, the GPU follows a **Checkpointing** strat
 
 ![On the left we have memory graph of 8B model with no recomputation, and on the right is the same model with selective recomputation.](Notes%20form%20Ultrascale%20Playbook/image.png)
 
-On the left we have memory graph of 8B model with no recomputation, and on the right is the same model with selective recomputation.
+On the left, we have memory graph of 8B model with no recomputation, and on the right is the same model with selective recomputation.
 
 Unfortunately, activations still have a linear dependence on the batch size, and all our profiles in the bar plots above were using batch_size = 1, so as we move to larger batch sizes this might become an issue again. Fortunately, we have a second tool in our box - **gradient accumulation** to the rescue!
 
 ## Gradient accumulation
 
-Batch sizes can get huge, so we divide batches into micro batches, compute forward and backward for each micro batch and the either sum or mean the grads.
+Batch sizes can get huge, so we divide batches into micro batches, compute forward and backward for each micro batch and either sum or mean the grads.
 
 1. **Forward/Backward 1:** Process Micro-batch #1 → Compute gradients → **Store them** in the `.grad` buffer.
 2. **Forward/Backward 2:** Process Micro-batch #2 → Compute gradients → **Add them** to the existing gradients in the buffer.
@@ -151,7 +151,7 @@ The idea of data parallelism is to clone model weights in each gpu and run forwa
 
 ![image.png](Notes%20form%20Ultrascale%20Playbook/image%201.png)
 
-Let’s say we have global batch size of 64, and 4 GPUs. DP for each gpu is 16 and we have micro batch size of 2. Here is what happens:
+Let’s say we have a global batch size of 64, and 4 GPUs. DP for each gpu is 16 and we have micro batch size of 2. Here is what happens:
 
 $$
 \begin{aligned} 
@@ -168,14 +168,14 @@ $$
 \end{aligned}
 $$
 
-* - Micro batch gradients at each pass are saved in grad buffer and summed together.
+* - Micro batch gradients at each pass are saved in the grad buffer and summed together.
 
 All reduce is a circular process where each gpu sends a fraction of its gradients to the next one until each GPU holds the global gradients. The complexity of all reduce is O(N).
 
-However, there are some downsides of DP:
+However, there are some downsides to DP:
 
-1. All reduce is bottleneck because if we have 1024 GPUs, it will take 1023 operations for all devices to obtain the full gradients, while stalling. Also with bigger DP our computation-communication ratio gets smaller and smaller which is undesirable.
-2. Every GPU holds a copy of the model. This is fine for smaller models, but larger models is hard to fit into one GPU.
+1. All reduce is a bottleneck because if we have 1024 GPUs, it will take 1023 operations for all devices to obtain the full gradients, while stalling. Also with bigger DP our computation-communication ratio gets smaller and smaller which is undesirable.
+2. Every GPU holds a copy of the model. This is fine for smaller models, but larger models are hard to fit into one GPU.
 
 ---
 
@@ -201,11 +201,11 @@ In ZeRO-1, optimizer states are partitioned into **$N_d$** equal shards, where *
 
 Each GPU holds replicas of model parameters and gradients while sharding the optimizer states.
 
-1. Each GPU performs forward pass for its micro batch and get activations
-2. Each GPU then performs backward pass on activations to get local gradients
-3. Perform all-reduce to get global gradients from all GPUs
+1. Each GPU performs a forward pass for its micro batch and gets activations
+2. Each GPU then performsa  backward pass on activations to get local gradients
+3. Perform an all-reduce to get global gradients from all GPUs
 4. Local optimizer updates its local states in each GPU
-5. Perform all gather to get fully updated model parameters in BF16 and store in each GPU
+5. Perform all gather to get fully updated model parameters in BF16 and store them in each GPU
     
     ![dp_zero1.gif](Notes%20form%20Ultrascale%20Playbook/dp_zero1.gif)
     
@@ -216,10 +216,10 @@ Each GPU holds replicas of model parameters and gradients while sharding the opt
 
 Since on each replica we only need to have the gradient shard corresponding to its optimizer state shard, it makes sense to shard gradients as well, similarly to the optimizer states. Then, during the backward pass, instead of performing an all-reduce over the gradients, we only perform a reduce-scatter operation!
 
-Each GPU holds replicas of model parameters while sharding the gradients optimizer states.
+Each GPU holds replicas of model parameters while sharding the gradient optimizer states.
 
-1. Each GPU performs forward pass for its micro batch and get activations.
-2. Each GPU performs backward pass to get its local gradients.
+1. Each GPU performs a forward pass for its micro batch and gets activations.
+2. Each GPU performs a backward pass to get its local gradients.
 3. Perform reduce-scatter to receive the part of gradients that it needs to update in the optimizer ($1/N_d$).
 4. Local optimizer updates its local states in each GPU.
 5.  Perform all gather to get fully updated model parameters in BF16 and store in each GPU.
@@ -229,15 +229,15 @@ Each GPU holds replicas of model parameters while sharding the gradients optimiz
 
 ### Zero - 3: optimizer state + gradient + parameter partitioning
 
-The "magic" of **ZeRO-3** is that it collects and discard parameters **layer-by-layer** just in time for the math.
+The "magic" of **ZeRO-3** is that it collects and discards parameters **layer-by-layer** just in time for the math.
 
 1. **The Trigger:** The code starts the forward pass and reaches **Layer 1**.
 2. **All-Gather (Layer 1):** Each GPU shouts to the others to get the missing shards for *only* Layer 1. Now, every GPU has the full parameters for Layer 1.
 3. **Compute:** Each GPU runs its **Micro-batch** through Layer 1.
 4. **Discard (Release):** As soon as the math for Layer 1 is done, the GPUs **delete** the full parameters they just collected, keeping only their original small shard.
 5. **Repeat:** This repeats for Layer 2, Layer 3, and so on.
-6. After that each GPU will hold its local activation. 
-7. Next we do backward pass (exactly the same way as forward pass just inverted in flow) to compute local gradients.
+6. After that, each GPU will hold its local activation. 
+7. Next we do a backward pass (exactly the same way as the forward pass, just inverted in flow) to compute local gradients.
 8. Perform reduce-scatter to receive the part of gradients that it needs to update in the optimizer ($1/N_d$)
 9. Local optimizer updates its local states in each GPU
 10. Optimizer uses local gradients to update local model parameters
@@ -248,7 +248,7 @@ With ZeRO, we can train even models that would ordinarily not fit into a single 
 
 ![Screenshot 2025-12-24 at 13.43.07.png](Notes%20form%20Ultrascale%20Playbook/Screenshot_2025-12-24_at_13.43.07.png)
 
-However, there are some limits here: DP only works if a layer of the model fits in a single GPU, and ZeRO can only partition the parameters, gradients, and optimizer states, not the activation memory! As you can remember, the memory scales with sequence length and batch size. We could just limit those, but in practice we don’t want to be limited by hardware to train with only a short sequence length.
+However, there are some limits here: DP only works if a layer of the model fits in a single GPU, and ZeRO can only partition the parameters, gradients, and optimizer states, not the activation memory! As you can remember, the memory scales with sequence length and batch size. We could just limit those, but in practice, we don’t want to be limited by hardware to train with only a short sequence length.
 
 To overcome this issue, it's time to examine a new, orthogonal axis of parallelism - ***tensor parallelism (TP)***. Unlike ZeRO-3, which relies on heavy parameter communication, TP proposes to shard parameters, gradients, optimizer states, AND activations across devices without requiring any communication of model parameters between GPUs.
 
@@ -345,7 +345,7 @@ By pairing early and late tokens on the same GPU, we balance the computational l
 
 ## Pipeline parallelism (PP)
 
-In pipeline parallelism we split model layers between GPUs which looks similar to ZeRO-3. However, there is a key difference between these 2 approaches. I will use kitchen example to explain that:
+In pipeline parallelism we split model layers between GPUs which looks similar to ZeRO-3. However, there is a key difference between these 2 approaches. I will use a kitchen example to explain that:
 
 **The "Kitchen" Analogy**
 
@@ -366,7 +366,7 @@ The biggest downside of PP is that it's hard to keep everyone busy. If Chef 1 is
 
 ### ***All forward, all backward*** PP ***(AFAB)***
 
-To fix bubble of naive PP, we use **Micro-batches** (passing many small cakes instead of one big one). Now, when the second GPU is busy processing micro-batch 1, the first GPU can already start processing micro-batch 2. Here is a schedule using eight micro-batches:
+To fix the bubble of naive PP, we use **Micro-batches** (passing many small cakes instead of one big one). Now, when the second GPU is busy processing micro-batch 1, the first GPU can already start processing micro-batch 2. Here is a schedule using eight micro-batches:
 
 ![Before, the numbers in the diagram indicated the layers, but in all pipeline parallel plots from here on they indicate micro-batches. You can think of each square here as containing several layers, as seen in the previous figure.](Notes%20form%20Ultrascale%20Playbook/image%208.png)
 
@@ -415,7 +415,7 @@ Let’s say we have 8 GPUs and 8 experts.
 1. **Parallel Processing:** All 8 GPUs begin the forward pass independently. They process their respective micro-batches
 2. **The Routing Decision:** When the micro-batches reach the MoE layer, the Router analyzes every token in every micro-batch. It decides which of the 8 experts is best suited to handle each specific token.
 3. **The Token Exchange (All-to-All):** Since "Expert 1" lives on GPU 1 and "Expert 8" lives on GPU 8, the GPUs must swap tokens. If GPU 1 is holding a token that needs Expert 8, it "dispatches" that token across the network.
-4. **Specialized Computation:** Once the exchange is complete, each GPU finds itself holding a new batch of tokens that all specifically required its local expert. The GPU performs the FFN calculation and then "returns" the tokens to their original owners.
+4. **Specialized Computation:** Once the exchange is complete, each GPU finds itself holding a new batch of tokens that all specifically require its local expert. The GPU performs the FFN calculation and then "returns" the tokens to their original owners.
 
 # Summary
 
