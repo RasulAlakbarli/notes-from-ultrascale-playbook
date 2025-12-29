@@ -241,62 +241,67 @@ pre code {
   line-height: 1.6;
 }
 
-/* Tables - Reset and Style */
-/* ========== THE TABLE FIX ========== */
+/* ========== TABLE FIX (Nuclear Option) ========== */
 
-/* 1. Force the table to fill the container and align left */
-table, 
-.markdown-body table {
-  width: 100% !important;
-  display: table !important;
+/* 1. Container & Sizing */
+table {
+  /* Use max-content to wrap tight around text, prevents 100% stretching */
+  width: max-content !important; 
+  max-width: 100% !important;
+  
+  /* Force Left Alignment */
+  margin-left: 0 !important;
+  margin-right: auto !important;
+  margin-top: 2rem !important;
+  margin-bottom: 2rem !important;
+  
   border-collapse: collapse !important;
-  margin: 2rem 0 !important;
-  table-layout: auto !important; /* Let columns adjust to content */
-  border: 1px solid var(--border) !important;
-  background-color: var(--bg) !important;
+  border-spacing: 0 !important;
+  display: table !important;
+  
+  /* Reset borders and background */
+  border: 1px solid var(--border);
+  background-color: var(--bg);
 }
 
-/* 2. Fix the Cells and remove "Ghost" spacing */
+/* 2. THE GHOST COLUMN KILLER */
+/* This hides any whitespace/indentation characters between your tags */
+table tr {
+  font-size: 0 !important;
+  white-space: nowrap !important;
+}
+
+/* 3. Cell Styling (Restore Font Size Here) */
 table th, 
 table td {
+  font-size: 0.95rem !important; /* Restore text size */
+  white-space: normal !important; /* Allow text to wrap naturally */
   padding: 0.75rem 1rem !important;
   text-align: left !important;
   border: 1px solid var(--border) !important;
   vertical-align: middle !important;
-  /* This prevents hidden characters from creating massive gaps */
-  white-space: normal !important; 
 }
 
-/* 3. Header Styling */
+/* 4. Headers */
 table th {
   background-color: var(--table-header) !important;
   color: var(--heading) !important;
   font-weight: 700 !important;
   text-transform: uppercase;
-  font-size: 0.8rem;
+  font-size: 0.8rem !important;
+  letter-spacing: 0.05em;
 }
 
-/* 4. Zebra Striping */
+/* 5. Zebra Stripes */
 table tr:nth-child(even) td {
   background-color: var(--table-stripe) !important;
 }
 
-/* 5. Fix KaTeX/Math positioning inside cells */
+/* 6. Fix KaTeX/Math Spacing */
+/* Prevents math from adding weird vertical gaps */
 td .katex-display {
   margin: 0 !important;
   padding: 0 !important;
-  display: inline-block !important; /* Prevents it from taking a whole line */
-}
-
-/* ========== CLEAN DARK MODE VARIABLES ========== */
-/* We keep the variables here so the !important rules above use the right colors */
-:root[data-theme="dark"] {
-  --bg: #1a1a1a;
-  --border: #3a3a3a;
-  --table-header: #252525;
-  --table-stripe: #1f1f1f;
-  --text: #e4e4e7;
-  --heading: #fafafa;
 }
 
 /* Images */

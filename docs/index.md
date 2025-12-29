@@ -217,9 +217,9 @@ This approach is organized into three possible optimization stages:
 - ZeRO-2: optimizer state + gradient partitioning
 - ZeRO-3: optimizer state + gradient + parameter partitioning
 
-![Here, Ψ denotes the number of parameters, *k* denotes the memory multiplier of optimizer states (k=12 for Adam, as we've just seen), and N_d denotes DP degree.](Notes%20form%20Ultrascale%20Playbook/image%202.png)
+![Here, Ψ denotes the number of parameters, k denotes the memory multiplier of optimizer states (k=12 for Adam, as we've just seen), and N_d denotes DP degree.](Notes%20form%20Ultrascale%20Playbook/image%202.png)
 
-Here, Ψ denotes the number of parameters, *k* denotes the memory multiplier of optimizer states (k=12 for Adam, as we've just seen), and N_d denotes DP degree.
+Here, Ψ denotes the number of parameters, k denotes the memory multiplier of optimizer states (k=12 for Adam, as we've just seen), and N_d denotes DP degree.
 
 ---
 
