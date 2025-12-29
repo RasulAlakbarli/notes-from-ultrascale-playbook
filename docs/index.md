@@ -424,8 +424,8 @@ Let's take a look at how this works:
 
 While interleaving shrinks the bubble, **Zero Bubble** is a more recent scheduling innovation that aims to eliminate it entirely.5 The insight behind Zero Bubble is that the backward pass is actually composed of two different types of math:
 
-1. $\text{grad\_input}$ **(B):** Calculating the gradients for the previous layer so the pipeline can keep moving backward.
-2. 2. $\text{grad\_weight}$ **(W):** Calculating the actual updates for the weights of the current layer.
+1. $$\text{grad\_input}$$ **(B):** Calculating the gradients for the previous layer so the pipeline can keep moving backward.
+2. $$\text{grad\_weight}$$ **(W):** Calculating the actual updates for the weights of the current layer.
 
 In standard 1F1B, the GPU waits until it has finished both B and W before moving on. Zero Bubble schedules these operations asynchronously.6 It prioritizes the "B" pass (to keep the pipeline flowing) and "hides" the "W" pass (which is computationally heavy but not required for the pipeline to continue) inside the idle gaps.7 By intelligently reordering these sub-steps, Zero Bubble can theoretically achieve near-100% efficiency, effectively "filling" the bubble with weight gradient calculations.
 

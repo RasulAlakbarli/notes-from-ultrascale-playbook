@@ -241,49 +241,44 @@ pre code {
   line-height: 1.6;
 }
 
-/* ========== TABLE FIX (Nuclear Option) ========== */
+/* ========== FINAL TABLE FIX (Centered & Clean) ========== */
 
-/* 1. Container & Sizing - CENTERED */
 table {
-  /* Keep max-content so it wraps tight around text (optional, or use w-100%) */
-  width: max-content !important;
+  /* 1. Sizing: Shrink to fit text, but don't overflow */
+  width: fit-content !important; 
   max-width: 100% !important;
 
-  /* Centering Magic: Auto margins on both sides equalizes the space */
-  margin-left: auto !important;
-  margin-right: auto !important;
+  /* 2. Centering: This forces the table to the middle */
+  margin: 2rem auto !important;
   
-  margin-top: 2rem !important;
-  margin-bottom: 2rem !important;
-
+  /* 3. Display Properties */
+  display: table !important;
   border-collapse: collapse !important;
   border-spacing: 0 !important;
-  display: table !important;
-
-  /* Reset borders and background */
+  
+  /* 4. Visuals */
   border: 1px solid var(--border);
   background-color: var(--bg);
 }
 
-/* 2. THE GHOST COLUMN KILLER */
-/* This hides any whitespace/indentation characters between your tags */
+/* THE GHOST COLUMN KILLER (Keep this!) */
 table tr {
   font-size: 0 !important;
   white-space: nowrap !important;
 }
 
-/* 3. Cell Styling (Restore Font Size Here) */
+/* Restore Text Styles */
 table th, 
 table td {
-  font-size: 0.95rem !important; /* Restore text size */
-  white-space: normal !important; /* Allow text to wrap naturally */
+  font-size: 0.95rem !important;
+  white-space: normal !important;
   padding: 0.75rem 1rem !important;
-  text-align: left !important;
+  text-align: left !important; /* Text inside cells stays left (easier to read) */
   border: 1px solid var(--border) !important;
   vertical-align: middle !important;
 }
 
-/* 4. Headers */
+/* Headers */
 table th {
   background-color: var(--table-header) !important;
   color: var(--heading) !important;
@@ -291,18 +286,27 @@ table th {
   text-transform: uppercase;
   font-size: 0.8rem !important;
   letter-spacing: 0.05em;
+  text-align: center !important; /* Optional: Center just the headers */
 }
 
-/* 5. Zebra Stripes */
+/* Zebra Stripes */
 table tr:nth-child(even) td {
   background-color: var(--table-stripe) !important;
 }
 
-/* 6. Fix KaTeX/Math Spacing */
-/* Prevents math from adding weird vertical gaps */
+/* Math Fix */
 td .katex-display {
   margin: 0 !important;
   padding: 0 !important;
+}
+
+/* === JS WRAPPER FIX (Just in case you added the script) === */
+/* If the table is inside a wrapper div, center the wrapper too */
+.markdown-body > div:has(> table), 
+.content > div:has(> table) {
+  text-align: center;
+  margin: 0 auto;
+  width: 100%;
 }
 
 /* Images */
