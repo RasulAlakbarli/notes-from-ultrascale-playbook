@@ -54,7 +54,6 @@ html[data-theme="dark"] body {
 }
 
 html[data-theme="dark"] table {
-  background-color: #1a1a1a !important;
   border-color: #3a3a3a !important;
 }
 
@@ -72,19 +71,6 @@ html[data-theme="dark"] td {
 
 html[data-theme="dark"] tr:nth-child(even) td {
   background-color: #1f1f1f !important;
-}
-
-html[data-theme="dark"] tr:hover td,
-html[data-theme="dark"] table tr:hover td {
-  background-color: inherit !important;
-}
-
-html[data-theme="dark"] tr:nth-child(even):hover td {
-  background-color: #1f1f1f !important;
-}
-
-html[data-theme="dark"] tr:nth-child(odd):hover td {
-  background-color: #1a1a1a !important;
 }
 
 html[data-theme="dark"] code {
@@ -255,20 +241,27 @@ pre code {
   line-height: 1.6;
 }
 
-/* Tables */
+/* Tables - Reset and Style */
 table {
   border-collapse: collapse;
+  border-spacing: 0;
+  table-layout: auto;
+  width: auto !important;
+  max-width: 100%;
   margin: 1.5rem 0;
   font-size: 0.95rem;
   border: 1px solid var(--border);
+  display: table;
 }
 
 th, td {
-  padding: 0.875rem 1rem;
+  padding: 0.75rem 1rem;
   text-align: left;
   border: 1px solid var(--border);
-  background-color: var(--bg);
-  color: var(--text);
+  background-color: var(--bg) !important;
+  color: var(--text) !important;
+  white-space: normal;
+  width: auto !important;
 }
 
 th {
@@ -281,20 +274,7 @@ th {
 }
 
 tr:nth-child(even) td {
-  background-color: var(--table-stripe);
-}
-
-/* Disable hover effects on tables */
-tr:hover td {
-  background-color: inherit !important;
-}
-
-tr:nth-child(even):hover td {
   background-color: var(--table-stripe) !important;
-}
-
-tr:nth-child(odd):hover td {
-  background-color: var(--bg) !important;
 }
 
 /* Images */
