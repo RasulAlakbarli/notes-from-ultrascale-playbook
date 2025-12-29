@@ -1,4 +1,4 @@
-/* CSS Variables */
+/* CSS Variables - Light Mode */
 :root {
   color-scheme: light dark;
   --bg: #ffffff;
@@ -22,25 +22,108 @@
   --radius: 12px;
 }
 
+/* CSS Variables - Dark Mode */
 :root[data-theme="dark"] {
-  --bg: #121212;
-  --bg-secondary: #1e1e1e;
+  --bg: #1a1a1a;
+  --bg-secondary: #242424;
   --text: #e4e4e7;
   --text-secondary: #a1a1aa;
   --heading: #fafafa;
-  --card: #1e1e1e;
-  --border: #2e2e2e;
+  --card: #242424;
+  --border: #3a3a3a;
   --link: #60a5fa;
   --link-hover: #93c5fd;
-  --code-bg: #1e1e1e;
+  --code-bg: #242424;
   --code-text: #f472b6;
   --accent: #a78bfa;
-  --accent-soft: rgba(167, 139, 250, 0.1);
-  --table-header: #1a1a1a;
-  --table-stripe: #181818;
-  --table-border: #333333;
+  --accent-soft: rgba(167, 139, 250, 0.15);
+  --table-header: #252525;
+  --table-stripe: #1f1f1f;
+  --table-border: #3a3a3a;
   --shadow: 0 1px 3px rgba(0,0,0,0.4);
   --shadow-lg: 0 10px 40px rgba(0,0,0,0.5);
+}
+
+/* ========== DARK MODE OVERRIDES ========== */
+/* These use !important to ensure they override any other styles */
+
+html[data-theme="dark"],
+html[data-theme="dark"] body {
+  background-color: #1a1a1a !important;
+  color: #e4e4e7 !important;
+}
+
+html[data-theme="dark"] table {
+  background-color: #1a1a1a !important;
+  border-color: #3a3a3a !important;
+}
+
+html[data-theme="dark"] th {
+  background-color: #252525 !important;
+  color: #fafafa !important;
+  border-color: #3a3a3a !important;
+}
+
+html[data-theme="dark"] td {
+  background-color: #1a1a1a !important;
+  color: #e4e4e7 !important;
+  border-color: #3a3a3a !important;
+}
+
+html[data-theme="dark"] tr:nth-child(even) td {
+  background-color: #1f1f1f !important;
+}
+
+html[data-theme="dark"] tr:hover td {
+  background-color: rgba(167, 139, 250, 0.15) !important;
+}
+
+html[data-theme="dark"] code {
+  background-color: #242424 !important;
+  color: #f472b6 !important;
+}
+
+html[data-theme="dark"] pre {
+  background-color: #242424 !important;
+  border-color: #3a3a3a !important;
+}
+
+html[data-theme="dark"] pre code {
+  color: #e4e4e7 !important;
+}
+
+html[data-theme="dark"] blockquote {
+  background-color: rgba(167, 139, 250, 0.15) !important;
+}
+
+html[data-theme="dark"] img {
+  border-color: #3a3a3a !important;
+}
+
+html[data-theme="dark"] h1,
+html[data-theme="dark"] h2,
+html[data-theme="dark"] h3,
+html[data-theme="dark"] h4,
+html[data-theme="dark"] h5,
+html[data-theme="dark"] h6 {
+  color: #fafafa !important;
+}
+
+html[data-theme="dark"] a {
+  color: #60a5fa !important;
+}
+
+html[data-theme="dark"] strong {
+  color: #fafafa !important;
+}
+
+html[data-theme="dark"] hr {
+  background: linear-gradient(90deg, transparent, #3a3a3a, transparent) !important;
+}
+
+html[data-theme="dark"] .theme-toggle {
+  background-color: #242424 !important;
+  border-color: #3a3a3a !important;
 }
 
 /* Reset & Base */
