@@ -257,10 +257,9 @@ pre code {
 
 /* Tables */
 table {
-  width: auto;
-  max-width: 100%;
+  width: 100%;
   border-collapse: collapse;
-  margin: 1.5rem auto;
+  margin: 1.5rem 0;
   font-size: 0.95rem;
   border-radius: var(--radius);
   overflow: hidden;
