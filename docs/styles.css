@@ -243,39 +243,21 @@ pre code {
 
 /* Tables - Reset and Style */
 table {
-  border-collapse: collapse;
-  border-spacing: 0;
-  table-layout: auto;
-  width: auto !important;
-  max-width: 100%;
-  margin: 1.5rem 0;
-  font-size: 0.95rem;
-  border: 1px solid var(--border);
-  display: table;
-}
-
-th, td {
-  padding: 0.75rem 1rem;
-  text-align: left;
-  border: 1px solid var(--border);
-  background-color: var(--bg) !important;
-  color: var(--text) !important;
-  white-space: normal;
-  width: auto !important;
-}
-
-th {
-  background-color: var(--table-header) !important;
-  font-weight: 600;
-  color: var(--heading) !important;
-  text-transform: uppercase;
-  font-size: 0.8rem;
-  letter-spacing: 0.05em;
-}
-
-tr:nth-child(even) td {
-  background-color: var(--table-stripe) !important;
-}
+    border-collapse: collapse;
+    table-layout: auto;
+    width: 100% !important; /* Force it to fill the container to stop 'shrinking' */
+    max-width: 100%;
+    margin: 1.5rem 0;       /* Keep vertical margin, reset horizontal */
+    display: table;
+    text-align: left;       /* Ensure content doesn't inherit centering */
+  }
+  
+  /* Ensure cells don't have accidental extra space */
+  th, td {
+    padding: 0.75rem 1rem;
+    text-align: left;
+    vertical-align: middle;
+  }
 
 /* Images */
 img {
