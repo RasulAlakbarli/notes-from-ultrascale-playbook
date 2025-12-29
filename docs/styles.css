@@ -166,47 +166,37 @@ pre code {
 /* Tables */
 table {
   width: 100%;
-  border-collapse: separate;
-  border-spacing: 0;
+  border-collapse: collapse;
   margin: 1.5rem 0;
   font-size: 0.95rem;
   border-radius: var(--radius);
   overflow: hidden;
   border: 1px solid var(--border);
-  background: var(--bg);
 }
 
 th, td {
   padding: 0.875rem 1rem;
   text-align: left;
-  border-bottom: 1px solid var(--border);
+  border: 1px solid var(--border);
+  background-color: var(--bg);
+  color: var(--text);
 }
 
 th {
-  background: var(--table-header);
+  background-color: var(--table-header) !important;
   font-weight: 600;
-  color: var(--heading);
+  color: var(--heading) !important;
   text-transform: uppercase;
   font-size: 0.8rem;
   letter-spacing: 0.05em;
-  border-bottom: 2px solid var(--border);
 }
 
-tbody tr {
-  background: var(--bg);
+tr:nth-child(even) td {
+  background-color: var(--table-stripe);
 }
 
-tbody tr:nth-child(even) {
-  background: var(--table-stripe);
-}
-
-tbody tr:hover {
-  background: var(--accent-soft);
-}
-
-/* Remove bottom border from last row */
-tbody tr:last-child td {
-  border-bottom: none;
+tr:hover td {
+  background-color: var(--accent-soft);
 }
 
 /* Images */
