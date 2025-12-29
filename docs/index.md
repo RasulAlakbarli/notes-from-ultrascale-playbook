@@ -48,11 +48,11 @@ $$
 
 Choosing a format is a trade-off between speed, memory, and numerical stability. Here are some standard formats used in LLM training:
 
-| **Format** | **Mantissa** | **Exponent** | **Max Value** | **Typical Use Case** |
-| --- | --- | --- | --- | --- |
-| **FP32** | 23 bits | 8 bits | $3.4 \times 10^{38}$ | Master Weights, Optimizer States |
-| **BF16** | 7 bits | 8 bits | $3.4 \times 10^{38}$ | LLM Training Standard |
-| **FP16** | 10 bits | 5 bits | $65,504$ | Inference, Older Training |
+| **Format** | **Mantissa** | **Exponent** | **Max Value** | **Typical Use Case** 
+| --- | --- | --- | --- | --- 
+| **FP32** | 23 bits | 8 bits | $3.4 \times 10^{38}$ | Master Weights, Optimizer States 
+| **BF16** | 7 bits | 8 bits | $3.4 \times 10^{38}$ | LLM Training Standard 
+| **FP16** | 10 bits | 5 bits | $65,504$ | Inference, Older Training 
 
 # The Memory Hierarchy
 
