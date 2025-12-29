@@ -74,10 +74,6 @@ html[data-theme="dark"] tr:nth-child(even) td {
   background-color: #1f1f1f !important;
 }
 
-html[data-theme="dark"] tr:hover td {
-  background-color: rgba(167, 139, 250, 0.15) !important;
-}
-
 html[data-theme="dark"] code {
   background-color: #242424 !important;
   color: #f472b6 !important;
@@ -276,10 +272,6 @@ th {
 
 tr:nth-child(even) td {
   background-color: var(--table-stripe);
-}
-
-tr:hover td {
-  background-color: var(--accent-soft);
 }
 
 /* Images */
