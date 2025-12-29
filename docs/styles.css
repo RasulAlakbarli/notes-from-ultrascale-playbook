@@ -243,22 +243,23 @@ pre code {
 
 /* ========== TABLE FIX (Nuclear Option) ========== */
 
-/* 1. Container & Sizing */
+/* 1. Container & Sizing - CENTERED */
 table {
-  /* Use max-content to wrap tight around text, prevents 100% stretching */
-  width: max-content !important; 
+  /* Keep max-content so it wraps tight around text (optional, or use w-100%) */
+  width: max-content !important;
   max-width: 100% !important;
-  
-  /* Force Left Alignment */
-  margin-left: 0 !important;
+
+  /* Centering Magic: Auto margins on both sides equalizes the space */
+  margin-left: auto !important;
   margin-right: auto !important;
+  
   margin-top: 2rem !important;
   margin-bottom: 2rem !important;
-  
+
   border-collapse: collapse !important;
   border-spacing: 0 !important;
   display: table !important;
-  
+
   /* Reset borders and background */
   border: 1px solid var(--border);
   background-color: var(--bg);
