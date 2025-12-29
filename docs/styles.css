@@ -242,22 +242,47 @@ pre code {
 }
 
 /* Tables - Reset and Style */
+/* Tables - Reset and Style */
 table {
-    border-collapse: collapse;
-    table-layout: auto;
-    width: 100% !important; /* Force it to fill the container to stop 'shrinking' */
-    max-width: 100%;
-    margin: 1.5rem 0;       /* Keep vertical margin, reset horizontal */
-    display: table;
-    text-align: left;       /* Ensure content doesn't inherit centering */
-  }
-  
-  /* Ensure cells don't have accidental extra space */
-  th, td {
-    padding: 0.75rem 1rem;
-    text-align: left;
-    vertical-align: middle;
-  }
+  border-collapse: collapse;
+  width: 100% !important; /* Forces the table to use the full 800px width */
+  max-width: 100%;
+  margin: 2rem 0;
+  display: table;
+  border: 1px solid var(--border);
+  background-color: var(--bg);
+}
+
+th, td {
+  padding: 0.75rem 1rem;
+  text-align: left; /* Explicitly forces left alignment */
+  border: 1px solid var(--border);
+  vertical-align: middle;
+}
+
+th {
+  background-color: var(--table-header) !important;
+  font-weight: 600;
+  color: var(--heading) !important;
+  text-transform: uppercase;
+  font-size: 0.8rem;
+  letter-spacing: 0.05em;
+}
+
+tr:nth-child(even) td {
+  background-color: var(--table-stripe) !important;
+}
+
+/* Fix for KaTeX inside tables */
+td .katex-display {
+  margin: 0;
+  padding: 0;
+  text-align: left; /* Prevents math from centering inside the cell */
+}
+
+td .katex {
+  white-space: nowrap; /* Prevents math formulas from breaking into two lines */
+}
 
 /* Images */
 img {
