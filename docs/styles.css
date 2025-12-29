@@ -1,3 +1,8 @@
+/* Hides the GitHub Pages default header */
+header {
+  display: none !important;
+}
+
 /* CSS Variables - Light Mode */
 :root {
   color-scheme: light dark;
