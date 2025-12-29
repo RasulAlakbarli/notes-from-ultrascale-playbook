@@ -242,46 +242,61 @@ pre code {
 }
 
 /* Tables - Reset and Style */
-/* Tables - Reset and Style */
-table {
-  border-collapse: collapse;
-  width: 100% !important; /* Forces the table to use the full 800px width */
-  max-width: 100%;
-  margin: 2rem 0;
-  display: table;
-  border: 1px solid var(--border);
-  background-color: var(--bg);
+/* ========== THE TABLE FIX ========== */
+
+/* 1. Force the table to fill the container and align left */
+table, 
+.markdown-body table {
+  width: 100% !important;
+  display: table !important;
+  border-collapse: collapse !important;
+  margin: 2rem 0 !important;
+  table-layout: auto !important; /* Let columns adjust to content */
+  border: 1px solid var(--border) !important;
+  background-color: var(--bg) !important;
 }
 
-th, td {
-  padding: 0.75rem 1rem;
-  text-align: left; /* Explicitly forces left alignment */
-  border: 1px solid var(--border);
-  vertical-align: middle;
+/* 2. Fix the Cells and remove "Ghost" spacing */
+table th, 
+table td {
+  padding: 0.75rem 1rem !important;
+  text-align: left !important;
+  border: 1px solid var(--border) !important;
+  vertical-align: middle !important;
+  /* This prevents hidden characters from creating massive gaps */
+  white-space: normal !important; 
 }
 
-th {
+/* 3. Header Styling */
+table th {
   background-color: var(--table-header) !important;
-  font-weight: 600;
   color: var(--heading) !important;
+  font-weight: 700 !important;
   text-transform: uppercase;
   font-size: 0.8rem;
-  letter-spacing: 0.05em;
 }
 
-tr:nth-child(even) td {
+/* 4. Zebra Striping */
+table tr:nth-child(even) td {
   background-color: var(--table-stripe) !important;
 }
 
-/* Fix for KaTeX inside tables */
+/* 5. Fix KaTeX/Math positioning inside cells */
 td .katex-display {
-  margin: 0;
-  padding: 0;
-  text-align: left; /* Prevents math from centering inside the cell */
+  margin: 0 !important;
+  padding: 0 !important;
+  display: inline-block !important; /* Prevents it from taking a whole line */
 }
 
-td .katex {
-  white-space: nowrap; /* Prevents math formulas from breaking into two lines */
+/* ========== CLEAN DARK MODE VARIABLES ========== */
+/* We keep the variables here so the !important rules above use the right colors */
+:root[data-theme="dark"] {
+  --bg: #1a1a1a;
+  --border: #3a3a3a;
+  --table-header: #252525;
+  --table-stripe: #1f1f1f;
+  --text: #e4e4e7;
+  --heading: #fafafa;
 }
 
 /* Images */
